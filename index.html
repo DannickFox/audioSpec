@@ -7,8 +7,31 @@
         <link href="style.css" rel="stylesheet">
     </head>
     <body>
-    <canvas id="oscilloscope" width="600" height="100"></canvas><br>
-    <canvas id="spectrogram" width="600" height="256"></canvas>
-    <script src="audio.js"></script>
+        <canvas id="oscilloscope" width="655" height="100"></canvas><br>
+        <canvas id="spectrogram" width="600" height="256"></canvas>
+        <canvas id="specLegend" width="50" height="256"></canvas><br>
+        <h4>Analyser</h4>
+        FFT samples: <input type="range" id="fftSize" value="11" min="5" max="13">
+        Gain: <input type="range" id="gain" value="1" min="0.5" max="5" step="0.5"><br>
+        <h4>Spectrogram</h4>
+        <p id="freqData"></p>
+        Freq Samples: <input type="text" id="spectrumY" value="256"><br>
+        Time data: <input type="text" id="spectrumX" value="1024">
+        <script src="audio.js"></script>
+        <script>
+            'use strict'
+            const specLegend = document.getElementById('specLegend');
+            const sCtx = specLegend.getContext('2d');
+            const divi = specLegend.height / 256;
+            for (let i = 0; i < 256; i++) {
+                let c = 255 - i;
+                sCtx.fillStyle = 'rgb(' + c + ', ' + c +', ' + c + ')';
+                sCtx.fillRect(0, i * divi, specLegend.width, Math.ceil(divi));
+            }
+            sCtx.fillStyle = 'black';
+            sCtx.fillText(analyser.maxDecibels + ' dB', 5, 10);
+            sCtx.fillStyle = 'white';
+            sCtx.fillText(analyser.minDecibels + ' dB', 5, specLegend.height - 5);
+        </script>
     </body>
 </html>
